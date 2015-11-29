@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListener {
 
 	private Color defaultBgColor = Color.WHITE;
 	private int lastX, lastY;    //上次的位置
@@ -22,9 +22,9 @@ public class DrawPanel extends JPanel {
 	public DrawPanel() {
 		
 		this.setBackground(defaultBgColor);
-		mBufferedImage = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
+		mBufferedImage = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
 		mGraphics2d = mBufferedImage.createGraphics();
-		mGraphics2d.setColor(Color.RED);
+		mGraphics2d.setColor(Color.BLACK);
 		isBegin = false;
 	}
 	
@@ -60,11 +60,16 @@ public class DrawPanel extends JPanel {
 	public void savePicture() {
 		
 		try {
-			
 			ImageIO.write(mBufferedImage, "PNG", new File("frame.png"));
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void getColor(Color color) {
+		// TODO Auto-generated method stub
+		mGraphics2d.setColor(color);
 	}
 }

@@ -3,6 +3,9 @@ package com.github.lmf12;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import com.github.lmf12.UI.BaseWindow;
 import com.github.lmf12.util.SwingConsole;
 
@@ -16,6 +19,12 @@ public class PixelEditor {
 	public static final String PARAMETER_TITLE = "测试";
 	
 	public static void main(String[] args) {
+		
+//		try {   //尝试改变UI的外观
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 	    Dimension screenSize =Toolkit.getDefaultToolkit().getScreenSize();   //获取屏幕大小
 		SwingConsole.createWindow(new BaseWindow(), PARAMETER_TITLE, PARAMETER_WIDTH, PARAMETER_HEIGHT,
