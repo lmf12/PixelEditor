@@ -1,75 +1,121 @@
 package com.github.lmf12.UI;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListener {
+import com.github.lmf12.config.PixelResource;
 
-	private Color defaultBgColor = Color.WHITE;
-	private int lastX, lastY;    //上次的位置
-	private int locX, locY;   //本次的位置
-	private BufferedImage mBufferedImage;
-	private Graphics2D mGraphics2d;
-	private boolean isBegin;   //表示是否开始绘画
+public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListener {
+	
+	private DrawPanelFront mDrawPanelFront = null;
+	private DrawPanelBack mDrawPanelBack = null;
+	private int cellSize = 20;   //单元格的尺寸，像素为单位，默认为20像素
+	private int panelWidth = 16, panelHeight = 16;   //面板的长宽，表示有多少个单元格，默认为16×16
 	
 	public DrawPanel() {
-		
-		this.setBackground(defaultBgColor);
-		mBufferedImage = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
-		mGraphics2d = mBufferedImage.createGraphics();
-		mGraphics2d.setColor(Color.BLACK);
-		isBegin = false;
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
+	/**
+	 * 在新建面板后必须调用初始化函数，目的为了可以设置参数
+	 * */
+	public void init() {
 		
-		super.paintComponent(g);
+		mDrawPanelBack = new DrawPanelBack(cellSize, panelWidth, panelHeight);
+		mDrawPanelBack.setBounds(new Rectangle(0, 0, panelWidth * cellSize, panelHeight * cellSize));
+		mDrawPanelFront = new DrawPanelFront(cellSize, panelWidth, panelHeight);
+		mDrawPanelFront.setBounds(new Rectangle(0, 0, panelWidth * cellSize, panelHeight * cellSize));
+		this.setLayout(null);
+		this.add(mDrawPanelFront);
+		this.add(mDrawPanelBack);
 		
-		if (isBegin) {
-			mGraphics2d.drawLine(lastX, lastY, locX, locY);
-			g.drawImage(mBufferedImage, 0, 0, null);
-		}
+		/**
+	     * 绘图面板的两个监听器
+	     * */
+		mDrawPanelFront.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseDragged(MouseEvent event) {
+	
+				mDrawPanelFront.draw(event.getX(), event.getY());
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent event) {
+			}
+		});
+		mDrawPanelFront.addMouseListener(new MouseListener() {
+			
+	    	@Override
+			public void mousePressed(MouseEvent event) {
+				
+	    		mDrawPanelFront.startDraw(event.getX(), event.getY());
+			}
+	    	
+			@Override
+			public void mouseReleased(MouseEvent event) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent event) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent event) {
+				
+				
+				Image IMAGE_HAND1 = new ImageIcon(PixelResource.ICON_PENCIL).getImage();
+
+				Cursor CURSOR_PENCIL = Toolkit.getDefaultToolkit().createCustomCursor(IMAGE_HAND1,new Point(0, 31), "CURSOR_PENCIL");
+				
+				mDrawPanelFront.setCursor(CURSOR_PENCIL);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent event) {
+			}
+		});
 	}
 	
-	public void draw(int x, int y) {
+	/**
+	 * 设置单元格尺寸，默认为20像素
+	 * */
+	public void setCellSize(int size) {
 		
-		lastX = locX;
-		lastY = locY;
-		locX = x;
-		locY = y;
-		repaint();
+		cellSize = size;
 	}
 	
-	public void startDraw(int x, int y) {
+	/**
+	 * 设置面板长宽，默认为16×16
+	 * */
+	public void setPanelSize(int width, int height) {
 		
-		isBegin = true;
-		lastX = x;
-		lastY = y;
-		locX = x;
-		locY = y;
+		panelWidth = width;
+		panelHeight = height;
 	}
 	
 	public void savePicture() {
 		
-		try {
-			ImageIO.write(mBufferedImage, "PNG", new File("frame.png"));
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		mDrawPanelFront.savePicture();
 	}
 
 	@Override
 	public void getColor(Color color) {
-		// TODO Auto-generated method stub
-		mGraphics2d.setColor(color);
+
+		if (mDrawPanelFront != null) {
+			mDrawPanelFront.setGraphics2dColor(color);
+		}
+		else {
+			System.out.println("请先初始化画板");
+		}
 	}
 }

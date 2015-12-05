@@ -26,6 +26,8 @@ public class BaseWindow extends JFrame {
 		this.setJMenuBar(mMenuBar);
 		
 		mDrawPanel = new DrawPanel();
+		mDrawPanel.init();
+		
 		mRightPanel = new RightPanel();
 		
 		mRightPanel.setGraphicsColorListener(mDrawPanel);
@@ -49,46 +51,6 @@ public class BaseWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mDrawPanel.savePicture();
-			}
-		});
-	    
-	    /**
-	     * 绘图面板的两个监听器
-	     * */
-	    mDrawPanel.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseDragged(MouseEvent event) {
-	
-				mDrawPanel.draw(event.getX(), event.getY());
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent event) {
-			}
-		});
-	    mDrawPanel.addMouseListener(new MouseListener() {
-			
-	    	@Override
-			public void mousePressed(MouseEvent event) {
-				
-				mDrawPanel.startDraw(event.getX(), event.getY());
-			}
-	    	
-			@Override
-			public void mouseReleased(MouseEvent event) {
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent event) {
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent event) {
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent event) {
 			}
 		});
 	}
