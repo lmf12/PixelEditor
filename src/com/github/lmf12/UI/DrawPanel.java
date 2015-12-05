@@ -72,11 +72,8 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 			@Override
 			public void mouseEntered(MouseEvent event) {
 				
-				
 				Image IMAGE_HAND1 = new ImageIcon(PixelResource.ICON_PENCIL).getImage();
-
 				Cursor CURSOR_PENCIL = Toolkit.getDefaultToolkit().createCustomCursor(IMAGE_HAND1,new Point(0, 31), "CURSOR_PENCIL");
-				
 				mDrawPanelFront.setCursor(CURSOR_PENCIL);
 			}
 			
@@ -106,6 +103,18 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 	public void savePicture() {
 		
 		mDrawPanelFront.savePicture();
+	}
+	
+	
+	/**
+	 * 刷新绘制区的位置，使其居中显示
+	 * */
+	public void refreshDrawAreaLocation(int winWidth, int winHeight) {
+		
+		mDrawPanelBack.setBounds(new Rectangle((winWidth - panelWidth * cellSize) / 2, 
+				(winHeight - panelHeight * cellSize) / 2, panelWidth * cellSize, panelHeight * cellSize));
+		mDrawPanelFront.setBounds(new Rectangle((winWidth - panelWidth * cellSize) / 2, 
+				(winHeight - panelHeight * cellSize) / 2, panelWidth * cellSize, panelHeight * cellSize));
 	}
 
 	@Override

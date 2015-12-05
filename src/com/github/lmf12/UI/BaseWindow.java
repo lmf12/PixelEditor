@@ -2,11 +2,11 @@ package com.github.lmf12.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,6 +51,30 @@ public class BaseWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mDrawPanel.savePicture();
+			}
+		});
+	    
+	    /**
+	     * 最外层窗体监听窗口的变化
+	     * */
+	    this.addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				
+				mDrawPanel.refreshDrawAreaLocation(mDrawPanel.getWidth(), mDrawPanel.getHeight());
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
 			}
 		});
 	}
