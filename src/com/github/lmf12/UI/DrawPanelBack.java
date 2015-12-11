@@ -22,6 +22,8 @@ public class DrawPanelBack extends JPanel {
 		
 		super.paintComponent(g);
 		
+		Color mGray = new Color(204, 204, 204);   //自定义灰色
+		
 		for (int i=0; i<panelHeight; ++i) {
 			for (int j=0; j<panelWidth; ++j) {
 				if (j == 0) {
@@ -29,11 +31,11 @@ public class DrawPanelBack extends JPanel {
 						g.setColor(Color.WHITE);
 					}
 					else {
-						g.setColor(Color.GRAY);
+						g.setColor(mGray);
 					}
 				}
 				else {
-					g.setColor(g.getColor() == Color.WHITE ? Color.GRAY : Color.WHITE);
+					g.setColor(g.getColor() == Color.WHITE ? mGray : Color.WHITE);
 				}
 				g.fillRect(j*cellSize, i*cellSize, cellSize, cellSize);
 			}

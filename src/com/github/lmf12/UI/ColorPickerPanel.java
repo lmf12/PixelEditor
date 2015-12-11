@@ -2,19 +2,20 @@ package com.github.lmf12.UI;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import com.github.lmf12.config.PixelColor;
 
 /**
  * 取色面板，放置于右面板中
@@ -30,6 +31,7 @@ public class ColorPickerPanel extends JPanel {
 	private ColorSliderBar greenSlider = null;
 	private ColorSliderBar blueSlider = null;
 	private JPanel colorArea = null;
+	private JPanel changePanel = null;
 	
 	private BaseWindow.GraphicsColorListener mGraphicsColorListener = null;
 	
@@ -39,29 +41,101 @@ public class ColorPickerPanel extends JPanel {
 		
 		this.setPreferredSize(new Dimension(COLOR_PANEL_WIDTH, COLOR_PANEL_HEIGHT));
 		
+		addRecommendColor();
+		addColorArea();
+		addSliderBars();
+	}
+	
+	/**
+	 * 添加推荐颜色
+	 * */
+	private void addRecommendColor() {
+		
+		int rectWidth = 20;
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
+		for (int i = 0; i < PixelColor.RECOMMEND_LISTS.length; i++) {
+	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[i][0]),
+	    			new ColorRect.ColorRectLinster() {
+						
+						@Override
+						public void getColor(Color color) {
+							updateChangePanel(color);
+							updateColorSliderLoc(color);
+							updateColorArea();
+						}
+					});
+	    	c.fill = GridBagConstraints.HORIZONTAL;
+	    	c.gridx = i;
+	    	c.gridy = 0;
+			mainPanel.add(colorRect, c);
+	    }
+		
+		changePanel = new JPanel();
+		changePanel.setLayout(new GridBagLayout());
+		GridBagConstraints c1 = new GridBagConstraints();
+		
+		for (int i = 0; i < PixelColor.RECOMMEND_LISTS[0].length-1; i++) {
+	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[0][i+1]),
+	    			new ColorRect.ColorRectLinster() {
+						
+						@Override
+						public void getColor(Color color) {
+							updateColorSliderLoc(color);
+							updateColorArea();
+						}
+					});
+	    	c1.fill = GridBagConstraints.HORIZONTAL;
+	    	c1.gridx = i;
+	    	c1.gridy = 0;
+	    	changePanel.add(colorRect, c1);
+	    }
+		
+		this.add(mainPanel);
+		this.add(changePanel);
+	}
+	
+	/**
+	 * 添加显色面板
+	 * */
+	private void addColorArea() {
+		
+		//显色面板
 		colorArea = new JPanel();
-		colorArea.setPreferredSize(new Dimension(150, 150));
+		colorArea.setPreferredSize(new Dimension(100, 100));
 		colorArea.setBackground(new Color(0, 0, 0));
 		
+		this.add(colorArea);
+	}
+	
+	/**
+	 * 添加滑动条
+	 * */
+	private void addSliderBars() {
+		
+		//红色滑动条
 		redSlider = new ColorSliderBar();
 		redSlider.setLabelText("R");
 		redSlider.setPreferredSize(new Dimension(COLOR_PANEL_WIDTH - COLOR_PANEL_X_BORDER, 
 				COLOR_SLIDER_BAR_HEIGHT));
 		bindLinstersToSliderBar(redSlider);
 		
+		//绿色滑动条
 		greenSlider = new ColorSliderBar();
 		greenSlider.setLabelText("G");
 		greenSlider.setPreferredSize(new Dimension(COLOR_PANEL_WIDTH - COLOR_PANEL_X_BORDER, 
 				COLOR_SLIDER_BAR_HEIGHT));
 		bindLinstersToSliderBar(greenSlider);
 		
+		//蓝色滑动条
 		blueSlider = new ColorSliderBar();
 		blueSlider.setLabelText("B");
 		blueSlider.setPreferredSize(new Dimension(COLOR_PANEL_WIDTH - COLOR_PANEL_X_BORDER, 
 				COLOR_SLIDER_BAR_HEIGHT));
 		bindLinstersToSliderBar(blueSlider);
 		
-		this.add(colorArea);
 		this.add(redSlider);
 		this.add(greenSlider);
 		this.add(blueSlider);
@@ -163,5 +237,52 @@ public class ColorPickerPanel extends JPanel {
 				blueSlider.getSliderValue());
 		colorArea.setBackground(mColor);
 		mGraphicsColorListener.getColor(mColor);
+	}
+	
+	/**
+	 * 更新滑动条的位置
+	 * */
+	private void updateColorSliderLoc(Color color) {
+		
+		redSlider.setSliderValue(color.getRed());
+		greenSlider.setSliderValue(color.getGreen());
+		blueSlider.setSliderValue(color.getBlue());
+	}
+	
+	/**
+	 * 更新渐变颜色条
+	 * */
+	private void updateChangePanel(Color color) {
+		
+		changePanel.removeAll();
+		
+		int colorNum = 0;
+		String colorCode = PixelColor.turnToCode(color);
+		for (int i = 0; i < PixelColor.RECOMMEND_LISTS.length; i++) {
+			if (colorCode.equals(PixelColor.RECOMMEND_LISTS[i][0])) {
+				colorNum = i;
+				break;
+			}
+		}
+		int rectWidth = 20;
+		changePanel.setLayout(new GridBagLayout());
+		GridBagConstraints c1 = new GridBagConstraints();
+		
+		for (int i = 0; i < PixelColor.RECOMMEND_LISTS[0].length-1; i++) {
+	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[colorNum][i+1]),
+	    			new ColorRect.ColorRectLinster() {
+						
+						@Override
+						public void getColor(Color color) {
+							updateColorSliderLoc(color);
+							updateColorArea();
+						}
+					});
+	    	c1.fill = GridBagConstraints.HORIZONTAL;
+	    	c1.gridx = i;
+	    	c1.gridy = 0;
+	    	changePanel.add(colorRect, c1);
+	    }
+		changePanel.updateUI();
 	}
 }
