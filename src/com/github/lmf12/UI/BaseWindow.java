@@ -38,6 +38,13 @@ public class BaseWindow extends JFrame {
 //	    button.setPreferredSize(new Dimension(200, 100));
 	    this.add(mDrawPanel, BorderLayout.CENTER);   
 	    button = new JButton("Button 3 (LINE_START)");
+	    button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("dfsdfsdf");
+			}
+		});
 	    this.add(button, BorderLayout.LINE_START);     
 //	    button = new JButton("Long-Named Button 4 (PAGE_END)");
 //	    this.add(button, BorderLayout.PAGE_END);      

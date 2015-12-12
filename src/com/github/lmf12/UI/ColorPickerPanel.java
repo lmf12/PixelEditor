@@ -58,11 +58,12 @@ public class ColorPickerPanel extends JPanel {
 
 		for (int i = 0; i < PixelColor.RECOMMEND_LISTS.length; i++) {
 	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[i][0]),
+	    			PixelColor.RECOMMEND_LISTS[i][0],
 	    			new ColorRect.ColorRectLinster() {
 						
 						@Override
-						public void getColor(Color color) {
-							updateChangePanel(color);
+						public void getColor(Color color, String colorCode) {
+							updateChangePanel(color, colorCode);
 							updateColorSliderLoc(color);
 							updateColorArea();
 						}
@@ -79,10 +80,11 @@ public class ColorPickerPanel extends JPanel {
 		
 		for (int i = 0; i < PixelColor.RECOMMEND_LISTS[0].length-1; i++) {
 	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[PixelColor.RECOMMEND_LISTS.length-2][i+1]),
+	    			PixelColor.RECOMMEND_LISTS[PixelColor.RECOMMEND_LISTS.length-2][i+1],
 	    			new ColorRect.ColorRectLinster() {
 						
 						@Override
-						public void getColor(Color color) {
+						public void getColor(Color color, String colorCode) {
 							updateColorSliderLoc(color);
 							updateColorArea();
 						}
@@ -252,12 +254,11 @@ public class ColorPickerPanel extends JPanel {
 	/**
 	 * 更新渐变颜色条
 	 * */
-	private void updateChangePanel(Color color) {
+	private void updateChangePanel(Color color, String colorCode) {
 		
 		changePanel.removeAll();
 		
 		int colorNum = 0;
-		String colorCode = PixelColor.turnToCode(color);
 		for (int i = 0; i < PixelColor.RECOMMEND_LISTS.length; i++) {
 			if (colorCode.equals(PixelColor.RECOMMEND_LISTS[i][0])) {
 				colorNum = i;
@@ -270,10 +271,11 @@ public class ColorPickerPanel extends JPanel {
 		
 		for (int i = 0; i < PixelColor.RECOMMEND_LISTS[0].length-1; i++) {
 	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[colorNum][i+1]),
+	    			PixelColor.RECOMMEND_LISTS[colorNum][i+1],
 	    			new ColorRect.ColorRectLinster() {
 						
 						@Override
-						public void getColor(Color color) {
+						public void getColor(Color color, String colorCode) {
 							updateColorSliderLoc(color);
 							updateColorArea();
 						}

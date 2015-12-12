@@ -13,10 +13,12 @@ public class ColorRect extends JPanel {
 	
 	private Color color;
 	private ColorRectLinster colorRectLinster;
+	private String colorCode;
 	
-	public ColorRect(int width, final Color color, final ColorRectLinster linster) {
+	public ColorRect(int width, final Color color, final String colorCode, final ColorRectLinster linster) {
 		
 		this.color = color;
+		this.colorCode = colorCode;
 		this.setBackground(color);
 		this.setPreferredSize(new Dimension(width, width));
 		this.colorRectLinster = linster;
@@ -40,13 +42,13 @@ public class ColorRect extends JPanel {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				linster.getColor(color);
+				linster.getColor(color, colorCode);
 			}
 		});
 	}
 	
 	public interface ColorRectLinster {
 		
-		void getColor(Color color);
+		void getColor(Color color, String colorCode);
 	}
 }
