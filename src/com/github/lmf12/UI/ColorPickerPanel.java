@@ -68,8 +68,8 @@ public class ColorPickerPanel extends JPanel {
 						}
 					});
 	    	c.fill = GridBagConstraints.HORIZONTAL;
-	    	c.gridx = i;
-	    	c.gridy = 0;
+	    	c.gridx = i % 10;
+	    	c.gridy = i / 10;
 			mainPanel.add(colorRect, c);
 	    }
 		
@@ -78,7 +78,7 @@ public class ColorPickerPanel extends JPanel {
 		GridBagConstraints c1 = new GridBagConstraints();
 		
 		for (int i = 0; i < PixelColor.RECOMMEND_LISTS[0].length-1; i++) {
-	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[0][i+1]),
+	    	ColorRect colorRect = new ColorRect(rectWidth, PixelColor.turnToColor(PixelColor.RECOMMEND_LISTS[PixelColor.RECOMMEND_LISTS.length-2][i+1]),
 	    			new ColorRect.ColorRectLinster() {
 						
 						@Override
@@ -104,7 +104,7 @@ public class ColorPickerPanel extends JPanel {
 		
 		//ÏÔÉ«Ãæ°å
 		colorArea = new JPanel();
-		colorArea.setPreferredSize(new Dimension(100, 100));
+		colorArea.setPreferredSize(new Dimension(70, 70));
 		colorArea.setBackground(new Color(0, 0, 0));
 		
 		this.add(colorArea);
