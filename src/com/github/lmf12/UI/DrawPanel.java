@@ -105,6 +105,11 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 		mDrawPanelFront.savePicture();
 	}
 	
+	public void createPicWithData(int[][] data) {
+		
+		mDrawPanelFront.createPicWithData(data);
+	}
+	
 	
 	/**
 	 * 刷新绘制区的位置，使其居中显示

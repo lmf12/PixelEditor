@@ -2,12 +2,15 @@ package com.github.lmf12;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.lmf12.UI.BaseWindow;
 import com.github.lmf12.util.SwingConsole;
+import com.github.lmf12.util.Typeface;
 
 public class PixelEditor {
 	

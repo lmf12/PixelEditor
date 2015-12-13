@@ -11,6 +11,8 @@ import java.awt.event.ComponentListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import com.github.lmf12.util.Typeface;
+
 /**
  * 基础窗口类，在这上面添加组件
  * */
@@ -42,7 +44,7 @@ public class BaseWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("dfsdfsdf");
+				mDrawPanel.createPicWithData(Typeface.getTypeface("学"));
 			}
 		});
 	    this.add(button, BorderLayout.LINE_START);     
