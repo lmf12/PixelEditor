@@ -132,4 +132,12 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 			System.out.println("请先初始化画板");
 		}
 	}
+	
+	/**
+	 * 设置画板模式，绘画模式，橡皮擦模式等
+	 * */
+	public void setDrawType(int type) {
+		
+		mDrawPanelFront.setDrawType(type);
+	}
 }

@@ -35,6 +35,13 @@ public class BaseWindow extends JFrame {
 		mRightPanel.setGraphicsColorListener(mDrawPanel);
 		
 		JButton button = new JButton("Button 1 (PAGE_START)");
+		button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_ERASER);
+			}
+		});
 		this.add(button, BorderLayout.PAGE_START);     
 //	    button = new JButton("Button 2 (CENTER)");
 //	    button.setPreferredSize(new Dimension(200, 100));
@@ -44,7 +51,7 @@ public class BaseWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mDrawPanel.createPicWithData(Typeface.getTypeface("Ñ§"));
+				mDrawPanel.createPicWithData(Typeface.getTypeface("Íæ"));
 			}
 		});
 	    this.add(button, BorderLayout.LINE_START);     

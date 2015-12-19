@@ -14,6 +14,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class DrawPanelFront extends JPanel {
+	
+	static public final int DRAW_TYPE_PAINT = 1;   //绘笔模式
+	static public final int DRAW_TYPE_ERASER = 2;   //橡皮擦模式
 
 	private int locX, locY;   //本次的位置
 	private BufferedImage mBufferedImage;
@@ -23,12 +26,14 @@ public class DrawPanelFront extends JPanel {
 	private int cellSize;
 	private int panelWidth, panelHeight;
 	private int[][] drawData;
+	private int drawType;   //绘图模式
 	
 	public DrawPanelFront(int cellSize, int pWidth, int pHeight) {
 		
 		this.setOpaque(false);   //设置背景透明
 		this.isBegin = false;
 		this.isDataDrawing = false;
+		this.drawType = DRAW_TYPE_PAINT;
 		this.panelWidth = pWidth;
 		this.panelHeight = pHeight;
 		this.cellSize = cellSize;
@@ -58,8 +63,17 @@ public class DrawPanelFront extends JPanel {
 		//用于自由绘制
 		if (isBegin) {
 			if (mGraphics2d != null) {
-				mGraphics2d.fillRect(locX - (locX % cellSize), locY - (locY % cellSize), cellSize, cellSize);
-				g.drawImage(mBufferedImage, 0, 0, null);
+				if (drawType == DRAW_TYPE_PAINT) {
+					mGraphics2d.fillRect(locX - (locX % cellSize), locY - (locY % cellSize), cellSize, cellSize);
+					g.drawImage(mBufferedImage, 0, 0, null);
+				}
+				else if (drawType == DRAW_TYPE_ERASER) {
+					Color paintColor = mGraphics2d.getColor();
+					mBufferedImage = clearOnePixel(mBufferedImage, panelWidth, panelHeight, locX / cellSize, locY / cellSize);
+					mGraphics2d = mBufferedImage.createGraphics();   //缓存图变了，所以画笔也要变
+					mGraphics2d.setColor(paintColor);
+					g.drawImage(mBufferedImage, 0, 0, null);
+				}
 			}
 			else {
 				System.out.println("请先初始化绘画面板");
@@ -113,5 +127,69 @@ public class DrawPanelFront extends JPanel {
 		else {
 			System.out.println("请先初始化绘画面板");
 		}
+	}
+	
+	/**
+	 * 清除某一个像素点
+	 * 因为没有直接的重绘方法，这里选择重新绘制一个BufferedImage
+	 * */
+	private BufferedImage clearOnePixel(BufferedImage bufferedImage, int width, int height, int x, int y) {
+		
+		BufferedImage targetImage = new BufferedImage(width*cellSize, height*cellSize, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = targetImage.createGraphics();
+		
+		if (width == 1) {
+			return targetImage;
+		}
+		
+		int width1 = width / 2;
+		int width2 = width - width1;
+		int height1 = height / 2;
+		int height2 = height - height1;
+		
+		BufferedImage clearArea;
+		
+		if (x < width1 && y < height1) {
+			clearArea = bufferedImage.getSubimage(0, 0, width1 * cellSize, height1 * cellSize);
+			graphics.drawImage(clearOnePixel(clearArea, width1, height1, x, y), 0, 0, null);
+			
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, 0, width2 * cellSize, height1 * cellSize), width1 * cellSize, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(0, height1 * cellSize, width1 * cellSize, height2 * cellSize), 0, height1 * cellSize, null);
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, height1 * cellSize, width2 * cellSize, height2 * cellSize), width1 * cellSize, height1 * cellSize, null);
+		}
+		else if (x >= width1 && y < height1) {
+			clearArea = bufferedImage.getSubimage(width1 * cellSize, 0, width2 * cellSize, height1 * cellSize);
+			graphics.drawImage(clearOnePixel(clearArea, width2, height1, x-width1, y), width1 * cellSize, 0, null);
+			
+			graphics.drawImage(bufferedImage.getSubimage(0, 0, width1 * cellSize, height1 * cellSize), 0, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(0, height1 * cellSize, width1 * cellSize, height2 * cellSize), 0, height1 * cellSize, null);
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, height1 * cellSize, width2 * cellSize, height2 * cellSize), width1 * cellSize, height1 * cellSize, null);
+		}
+		else if (x < width1 && y >= height1) {
+			clearArea = bufferedImage.getSubimage(0, height1 * cellSize, width1 * cellSize, height2 * cellSize);
+			graphics.drawImage(clearOnePixel(clearArea, width1, height2, x, y-height1), 0, height1 * cellSize, null);
+			
+			graphics.drawImage(bufferedImage.getSubimage(0, 0, width1 * cellSize, height1 * cellSize), 0, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, 0, width2 * cellSize, height1 * cellSize), width1 * cellSize, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, height1 * cellSize, width2 * cellSize, height2 * cellSize), width1 * cellSize, height1 * cellSize, null);		
+		}
+		else if (x >= width1 && y >= height1) {
+			clearArea = bufferedImage.getSubimage(width1 * cellSize, height1 * cellSize, width2 * cellSize, height2 * cellSize);
+			graphics.drawImage(clearOnePixel(clearArea, width2, height2, x-width1, y-height1), width1 * cellSize, height1 * cellSize, null);
+			
+			graphics.drawImage(bufferedImage.getSubimage(0, 0, width1 * cellSize, height1 * cellSize), 0, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(width1 * cellSize, 0, width2 * cellSize, height1 * cellSize), width1 * cellSize, 0, null);
+			graphics.drawImage(bufferedImage.getSubimage(0, height1 * cellSize, width1 * cellSize, height2 * cellSize), 0, height1 * cellSize, null);
+		}
+		
+		return targetImage;
+	}
+	
+	/**
+	 * 设置画板模式，绘画模式，橡皮擦模式等
+	 * */
+	public void setDrawType(int type) {
+		
+		drawType = type;
 	}
 }
