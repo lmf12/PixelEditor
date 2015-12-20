@@ -21,6 +21,7 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 	private DrawPanelBack mDrawPanelBack = null;
 	private int cellSize = 20;   //单元格的尺寸，像素为单位，默认为20像素
 	private int panelWidth = 16, panelHeight = 16;   //面板的长宽，表示有多少个单元格，默认为16×16
+	private String icon = PixelResource.ICON_PENCIL;
 	
 	public DrawPanel() {
 	}
@@ -72,7 +73,7 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 			@Override
 			public void mouseEntered(MouseEvent event) {
 				
-				Image IMAGE_HAND1 = new ImageIcon(PixelResource.ICON_PENCIL).getImage();
+				Image IMAGE_HAND1 = new ImageIcon(icon).getImage();
 				Cursor CURSOR_PENCIL = Toolkit.getDefaultToolkit().createCustomCursor(IMAGE_HAND1,new Point(0, 31), "CURSOR_PENCIL");
 				mDrawPanelFront.setCursor(CURSOR_PENCIL);
 			}
@@ -136,8 +137,9 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 	/**
 	 * 设置画板模式，绘画模式，橡皮擦模式等
 	 * */
-	public void setDrawType(int type) {
+	public void setDrawType(int type, String icon) {
 		
 		mDrawPanelFront.setDrawType(type);
+		this.icon = icon;
 	}
 }

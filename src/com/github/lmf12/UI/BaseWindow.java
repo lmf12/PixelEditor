@@ -11,6 +11,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import com.github.lmf12.config.PixelResource;
 import com.github.lmf12.util.Typeface;
 
 /**
@@ -21,6 +22,7 @@ public class BaseWindow extends JFrame {
 	private MenuBar mMenuBar = null;
 	private DrawPanel mDrawPanel = null;
 	private RightPanel mRightPanel = null;
+	private LeftPanel mLeftPanel = null;
 	
 	public BaseWindow() {
 		
@@ -31,30 +33,27 @@ public class BaseWindow extends JFrame {
 		mDrawPanel.init();
 		
 		mRightPanel = new RightPanel();
-		
 		mRightPanel.setGraphicsColorListener(mDrawPanel);
+		
+		mLeftPanel = new LeftPanel();
+		mLeftPanel.setDrawToolListeners(getDrawToolListener());
+		mLeftPanel.init();
 		
 		JButton button = new JButton("Button 1 (PAGE_START)");
 		button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_ERASER);
+				mDrawPanel.createPicWithData(Typeface.getTypeface("Íæ"));
 			}
 		});
 		this.add(button, BorderLayout.PAGE_START);     
 //	    button = new JButton("Button 2 (CENTER)");
 //	    button.setPreferredSize(new Dimension(200, 100));
+		
 	    this.add(mDrawPanel, BorderLayout.CENTER);   
-	    button = new JButton("Button 3 (LINE_START)");
-	    button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				mDrawPanel.createPicWithData(Typeface.getTypeface("Íæ"));
-			}
-		});
-	    this.add(button, BorderLayout.LINE_START);     
+	    this.add(mLeftPanel, BorderLayout.LINE_START);   
+	    
 //	    button = new JButton("Long-Named Button 4 (PAGE_END)");
 //	    this.add(button, BorderLayout.PAGE_END);      
 	    this.add(mRightPanel, BorderLayout.LINE_END);
@@ -93,6 +92,33 @@ public class BaseWindow extends JFrame {
 			public void componentHidden(ComponentEvent e) {
 			}
 		});
+	}
+	
+	/**
+	 * ·µ»Ø»æÍ¼¹¤¾ßµÄ¼àÌýÆ÷
+	 * */
+	private ActionListener[] getDrawToolListener() {
+		
+		//Ç¦±Ê¼àÌýÆ÷
+		ActionListener pencilListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_PAINT, PixelResource.ICON_PENCIL);
+			}
+		};
+		//ÏðÆ¤²Á¼àÌýÆ÷
+		ActionListener eraserListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_ERASER, PixelResource.ICON_ERASER);
+			}
+		};
+		
+		ActionListener[] als = {pencilListener, eraserListener};
+		
+		return als;
 	}
 	
 	/**

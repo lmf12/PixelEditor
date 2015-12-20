@@ -6,4 +6,5 @@ package com.github.lmf12.config;
 public class PixelResource {
 
 	public static final String ICON_PENCIL = "res/icon_pencil.png";
+	public static final String ICON_ERASER = "res/icon_eraser.png";
 }
