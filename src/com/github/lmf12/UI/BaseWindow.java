@@ -10,6 +10,7 @@ import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.github.lmf12.config.PixelResource;
 import com.github.lmf12.util.Typeface;
@@ -40,15 +41,17 @@ public class BaseWindow extends JFrame {
 		mLeftPanel.setDrawToolListeners(getDrawToolListener());
 		mLeftPanel.init();
 		
-		JButton button = new JButton("Button 1 (PAGE_START)");
-		button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				mDrawPanel.createPicWithData(Typeface.getTypeface("玩"));
-			}
-		});
-		this.add(button, BorderLayout.PAGE_START);     
+//		JButton button = new JButton("Button 1 (PAGE_START)");
+//		button.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//				mDrawPanel.createPicWithData(Typeface.getTypeface("玩"));
+//			}
+//		});
+//		this.add(button, BorderLayout.PAGE_START);     
+		
+		
 //	    button = new JButton("Button 2 (CENTER)");
 //	    button.setPreferredSize(new Dimension(200, 100));
 		
@@ -67,6 +70,20 @@ public class BaseWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mDrawPanel.savePicture();
+			}
+		});
+	    mMenuBar.setCreateWordItemListeners(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String inputValue = JOptionPane.showInputDialog("请输入一个单独的汉字：");
+				if (inputValue != null) {
+					try {
+						mDrawPanel.createPicWithData(Typeface.getTypeface(inputValue.substring(0, 1)));
+					}
+					catch (ArrayIndexOutOfBoundsException e) {}
+				}
 			}
 		});
 	    
