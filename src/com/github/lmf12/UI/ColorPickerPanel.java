@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -15,12 +14,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.lmf12.UI.BaseWindow.ColorAreaListener;
 import com.github.lmf12.config.PixelColor;
 
 /**
  * 取色面板，放置于右面板中
  * */
-public class ColorPickerPanel extends JPanel {
+public class ColorPickerPanel extends JPanel implements ColorAreaListener {
 
 	private static final int COLOR_PANEL_WIDTH = 250;
 	private static final int COLOR_PANEL_HEIGHT = 250;
@@ -286,5 +286,12 @@ public class ColorPickerPanel extends JPanel {
 	    	changePanel.add(colorRect, c1);
 	    }
 		changePanel.updateUI();
+	}
+
+	@Override
+	public void getColor(Color color) {
+		
+		this.updateColorSliderLoc(color);
+		this.updateColorArea();
 	}
 }

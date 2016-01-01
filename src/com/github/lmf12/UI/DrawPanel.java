@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import com.github.lmf12.UI.BaseWindow.ColorAreaListener;
 import com.github.lmf12.config.PixelResource;
 
 public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListener {
@@ -141,5 +142,13 @@ public class DrawPanel extends JPanel implements BaseWindow.GraphicsColorListene
 		
 		mDrawPanelFront.setDrawType(type);
 		this.icon = icon;
+	}
+	
+	/**
+	 * ÉèÖÃÑÕÉ«ÇøÓò¼àÌýÆ÷
+	 * */
+	public void setColorAreaListener(ColorAreaListener colorAreaListener) {
+		
+		mDrawPanelFront.setColorAreaListener(colorAreaListener);
 	}
 }

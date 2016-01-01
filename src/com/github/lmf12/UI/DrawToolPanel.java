@@ -19,7 +19,7 @@ public class DrawToolPanel extends JPanel {
 	private static final int DRAW_TOOL_PANEL_WIDTH = 200;
 	private static final int DRAW_TOOL_PANEL_HEIGHT = 200;
 	
-	private String[] drawToolList = {PixelResource.ICON_PENCIL, PixelResource.ICON_ERASER};   //绘画工具列表
+	private String[] drawToolList = {PixelResource.ICON_PENCIL, PixelResource.ICON_ERASER, PixelResource.ICON_STRAW};   //绘画工具列表
 	
 	public DrawToolPanel(ActionListener[] als) {
 		
@@ -41,8 +41,8 @@ public class DrawToolPanel extends JPanel {
 	        button.setIcon(icon);
 	        button.addActionListener(als[i]);
 	    	c.fill = GridBagConstraints.HORIZONTAL;
-	    	c.gridx = i % 10;
-	    	c.gridy = i / 10;
+	    	c.gridx = i % 2;
+	    	c.gridy = i / 2;
 			this.add(button, c);
 	    }
 	}

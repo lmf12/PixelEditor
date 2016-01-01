@@ -34,6 +34,7 @@ public class BaseWindow extends JFrame {
 		
 		mRightPanel = new RightPanel();
 		mRightPanel.setGraphicsColorListener(mDrawPanel);
+		mDrawPanel.setColorAreaListener(mRightPanel.getColorPickerPanel());
 		
 		mLeftPanel = new LeftPanel();
 		mLeftPanel.setDrawToolListeners(getDrawToolListener());
@@ -115,8 +116,16 @@ public class BaseWindow extends JFrame {
 				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_ERASER, PixelResource.ICON_ERASER);
 			}
 		};
+		//吸管监听器
+		ActionListener strawListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_STRAW, PixelResource.ICON_STRAW);
+			}
+		};
 		
-		ActionListener[] als = {pencilListener, eraserListener};
+		ActionListener[] als = {pencilListener, eraserListener, strawListener};
 		
 		return als;
 	}
@@ -125,6 +134,14 @@ public class BaseWindow extends JFrame {
 	 * 画笔颜色接口，用于让DrawPanel获取画笔颜色
 	 * */
 	public interface GraphicsColorListener {
+		
+		void getColor(Color color);
+	}
+	
+	/**
+	 * 颜色区域接口，用于让ColorPickerPanel更新颜色区域的颜色
+	 * */
+	public interface ColorAreaListener {
 		
 		void getColor(Color color);
 	}

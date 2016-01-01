@@ -13,10 +13,13 @@ import java.sql.Date;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import com.github.lmf12.UI.BaseWindow.ColorAreaListener;
+
 public class DrawPanelFront extends JPanel {
 	
 	static public final int DRAW_TYPE_PAINT = 1;   //绘笔模式
 	static public final int DRAW_TYPE_ERASER = 2;   //橡皮擦模式
+	static public final int DRAW_TYPE_STRAW = 3;   //吸管模式
 
 	private int locX, locY;   //本次的位置
 	private BufferedImage mBufferedImage;
@@ -27,6 +30,7 @@ public class DrawPanelFront extends JPanel {
 	private int panelWidth, panelHeight;
 	private int[][] drawData;
 	private int drawType;   //绘图模式
+	private ColorAreaListener mColorAreaListener;
 	
 	public DrawPanelFront(int cellSize, int pWidth, int pHeight) {
 		
@@ -73,6 +77,15 @@ public class DrawPanelFront extends JPanel {
 					mGraphics2d = mBufferedImage.createGraphics();   //缓存图变了，所以画笔也要变
 					mGraphics2d.setColor(paintColor);
 					g.drawImage(mBufferedImage, 0, 0, null);
+				}
+				else if (drawType == DRAW_TYPE_STRAW) {
+					g.drawImage(mBufferedImage, 0, 0, null);
+					
+					if (locX >= 0 && locY >= 0 && locX < mBufferedImage.getWidth() && locY < mBufferedImage.getHeight()) {
+						if (getElementColor(locX, locY).getAlpha() != 0) {
+							mColorAreaListener.getColor(getElementColor(locX, locY));
+						}
+					}
 				}
 			}
 			else {
@@ -186,10 +199,32 @@ public class DrawPanelFront extends JPanel {
 	}
 	
 	/**
+	 * 获取某一个像素点的颜色值
+	 * */
+	public Color getElementColor(int x, int y) {
+		
+		Object data = mBufferedImage.getRaster().getDataElements(x, y, null);
+        int red = mBufferedImage.getColorModel().getRed(data);  
+        int blue = mBufferedImage.getColorModel().getBlue(data);  
+        int green = mBufferedImage.getColorModel().getGreen(data);  
+        int Alpha = mBufferedImage.getColorModel().getAlpha(data);
+
+        return new Color(red, green, blue, Alpha);
+	}
+	
+	/**
 	 * 设置画板模式，绘画模式，橡皮擦模式等
 	 * */
 	public void setDrawType(int type) {
 		
 		drawType = type;
+	}
+	
+	/**
+	 * 设置颜色区域监听器
+	 * */
+	public void setColorAreaListener(ColorAreaListener colorAreaListener) {
+		
+		this.mColorAreaListener = colorAreaListener;
 	}
 }
