@@ -124,8 +124,16 @@ public class BaseWindow extends JFrame {
 				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_STRAW, PixelResource.ICON_STRAW);
 			}
 		};
+		//ÓÍÆáÍ°¼àÌýÆ÷
+		ActionListener kettleListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mDrawPanel.setDrawType(DrawPanelFront.DRAW_TYPE_KETTLE, PixelResource.ICON_KETTLE);
+			}
+		};
 		
-		ActionListener[] als = {pencilListener, eraserListener, strawListener};
+		ActionListener[] als = {pencilListener, eraserListener, strawListener, kettleListener};
 		
 		return als;
 	}

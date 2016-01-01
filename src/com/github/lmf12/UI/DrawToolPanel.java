@@ -19,7 +19,8 @@ public class DrawToolPanel extends JPanel {
 	private static final int DRAW_TOOL_PANEL_WIDTH = 200;
 	private static final int DRAW_TOOL_PANEL_HEIGHT = 200;
 	
-	private String[] drawToolList = {PixelResource.ICON_PENCIL, PixelResource.ICON_ERASER, PixelResource.ICON_STRAW};   //绘画工具列表
+	private String[] drawToolList = {PixelResource.ICON_PENCIL, PixelResource.ICON_ERASER, PixelResource.ICON_STRAW,
+									PixelResource.ICON_KETTLE};   //绘画工具列表
 	
 	public DrawToolPanel(ActionListener[] als) {
 		
@@ -37,6 +38,7 @@ public class DrawToolPanel extends JPanel {
 
 		for (int i = 0; i < drawToolList.length; i++) {
 			JButton button = new JButton();
+			button.setBackground(Color.ORANGE);
 			ImageIcon icon = new ImageIcon(drawToolList[i]);
 	        button.setIcon(icon);
 	        button.addActionListener(als[i]);

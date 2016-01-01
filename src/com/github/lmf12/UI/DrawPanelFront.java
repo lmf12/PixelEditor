@@ -20,6 +20,7 @@ public class DrawPanelFront extends JPanel {
 	static public final int DRAW_TYPE_PAINT = 1;   //绘笔模式
 	static public final int DRAW_TYPE_ERASER = 2;   //橡皮擦模式
 	static public final int DRAW_TYPE_STRAW = 3;   //吸管模式
+	static public final int DRAW_TYPE_KETTLE = 4;   //油漆桶模式
 
 	private int locX, locY;   //本次的位置
 	private BufferedImage mBufferedImage;
@@ -86,6 +87,10 @@ public class DrawPanelFront extends JPanel {
 							mColorAreaListener.getColor(getElementColor(locX, locY));
 						}
 					}
+				}
+				else if (drawType == DRAW_TYPE_KETTLE) {
+					mGraphics2d.fillRect(0, 0, panelWidth*cellSize, panelHeight*cellSize);
+					g.drawImage(mBufferedImage, 0, 0, null);
 				}
 			}
 			else {
