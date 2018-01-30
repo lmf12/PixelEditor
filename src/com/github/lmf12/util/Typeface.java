@@ -3,6 +3,8 @@ package com.github.lmf12.util;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import com.github.lmf12.config.PixelResource;
+
 public class Typeface {
 	
 	public static int[][] getTypeface(String c) {
@@ -12,7 +14,7 @@ public class Typeface {
 		int a[][] = new int[16][16];
 		
 		try {
-			randomFile = new RandomAccessFile("c:/hzk16", "r");
+			randomFile = new RandomAccessFile(PixelResource.HZK16K, "r");
 	            
 			byte[] word = c.getBytes("GB2312");
 	            
