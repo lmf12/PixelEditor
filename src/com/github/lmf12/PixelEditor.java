@@ -19,7 +19,7 @@ public class PixelEditor {
 	 * */
 	public static final int PARAMETER_WIDTH = 1000;
 	public static final int PARAMETER_HEIGHT = 800;
-	public static final String PARAMETER_TITLE = "²âÊÔ";
+	public static final String PARAMETER_TITLE = "ÏñËØ»­±à¼­Æ÷";
 	
 	public static void main(String[] args) {
 		

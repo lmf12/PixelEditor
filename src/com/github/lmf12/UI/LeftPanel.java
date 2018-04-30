@@ -12,7 +12,7 @@ public class LeftPanel extends JPanel {
 	
 	public LeftPanel() {
 		
-		this.setBackground(Color.ORANGE);
+		this.setBackground(new Color(218, 217, 216));
 	}
 	
 	/**

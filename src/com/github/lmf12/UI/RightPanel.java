@@ -14,7 +14,7 @@ public class RightPanel extends JPanel {
 		
 		mColorPickerPanel = new ColorPickerPanel();
 
-		this.setBackground(Color.GREEN);
+		this.setBackground(new Color(218, 217, 216));
 		this.add(mColorPickerPanel);
 	}
 	
